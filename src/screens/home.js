@@ -13,13 +13,32 @@ import _ from 'lodash';
 
 import {fetchTodos} from '../redux/actions/remoteTodos';
 
+const TodosList = ({todos}) => (
+  <FlatList
+    data={todos}
+    renderItem={renderItem}
+    keyExtractor={item => item.id.toString()}
+    contentContainerStyle={{
+      margin: 8,
+    }}
+  />
+);
+
+const renderItem = ({item}) => {
+  return (
+    <TouchableOpacity onPress={() => alert(item.id)} style={styles.item}>
+      <Text>{item.title}</Text>
+    </TouchableOpacity>
+  );
+};
+
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const {status, error, todos} = useSelector(state => state.remoteTodos);
 
   const [searchParams, setSearchParams] = useState({
     page: 1,
-    limit: 5,
+    limit: 10,
     title: '',
   });
 
@@ -38,25 +57,6 @@ export default function HomeScreen() {
       default:
         return <TodosList todos={todos} />;
     }
-  };
-
-  const TodosList = ({todos}) => (
-    <FlatList
-      data={todos}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-      contentContainerStyle={{
-        margin: 8,
-      }}
-    />
-  );
-
-  const renderItem = ({item}) => {
-    return (
-      <TouchableOpacity onPress={() => alert(item.id)} style={styles.item}>
-        <Text>{item.title}</Text>
-      </TouchableOpacity>
-    );
   };
 
   const debouncedSearch = _.debounce(query => {
