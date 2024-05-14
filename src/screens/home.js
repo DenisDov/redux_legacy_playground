@@ -68,7 +68,6 @@ export default function HomeScreen() {
       <TextInput
         style={styles.input}
         onChangeText={query => debouncedSearch(query)}
-        // value={searchParams.querywew}
       />
       {renderContent()}
     </View>
