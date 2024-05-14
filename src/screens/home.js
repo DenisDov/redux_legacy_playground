@@ -69,8 +69,6 @@ export default function HomeScreen() {
         style={styles.input}
         onChangeText={query => debouncedSearch(query)}
         // value={searchParams.querywew}
-        placeholder="Search"
-        placeholderTextColor="#E0E0E0"
       />
       {renderContent()}
     </View>
@@ -88,7 +86,5 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    paddingHorizontal: 10,
-    height: 40,
   },
 });
