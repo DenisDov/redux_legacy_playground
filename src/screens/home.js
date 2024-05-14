@@ -5,8 +5,11 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  View,
+  TextInput,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import _ from 'lodash';
 
 import {fetchTodos} from '../redux/actions/remoteTodos';
 
@@ -17,7 +20,7 @@ export default function HomeScreen() {
   const [searchParams, setSearchParams] = useState({
     page: 1,
     limit: 5,
-    name: '',
+    title: '',
   });
 
   useEffect(() => {
@@ -56,7 +59,22 @@ export default function HomeScreen() {
     );
   };
 
-  return renderContent();
+  const debouncedSearch = _.debounce(query => {
+    setSearchParams(prev => ({...prev, title: query}));
+  }, 500);
+
+  return (
+    <View style={{flex: 1}}>
+      <TextInput
+        style={styles.input}
+        onChangeText={query => debouncedSearch(query)}
+        // value={searchParams.querywew}
+        placeholder="Search"
+        placeholderTextColor="#E0E0E0"
+      />
+      {renderContent()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -67,5 +85,10 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 16,
     borderRadius: 8,
+  },
+  input: {
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    height: 40,
   },
 });
