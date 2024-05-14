@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   Text,
-  View,
   StyleSheet,
   FlatList,
   TouchableOpacity,
@@ -17,7 +16,7 @@ export default function HomeScreen() {
 
   const [searchParams, setSearchParams] = useState({
     page: 1,
-    limit: 10,
+    limit: 5,
     name: '',
   });
 
@@ -39,16 +38,14 @@ export default function HomeScreen() {
   };
 
   const TodosList = ({todos}) => (
-    <View style={{flex: 1}}>
-      <FlatList
-        data={todos}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        contentContainerStyle={{
-          margin: 8,
-        }}
-      />
-    </View>
+    <FlatList
+      data={todos}
+      renderItem={renderItem}
+      keyExtractor={item => item.id.toString()}
+      contentContainerStyle={{
+        margin: 8,
+      }}
+    />
   );
 
   const renderItem = ({item}) => {
@@ -66,7 +63,7 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     backgroundColor: 'tomato',
-    height: 80,
+    height: 200,
     margin: 8,
     padding: 16,
     borderRadius: 8,
