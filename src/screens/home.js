@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {fetchTodos} from '../redux/actions/remoteTodos';
@@ -10,7 +17,7 @@ export default function HomeScreen() {
 
   const [searchParams, setSearchParams] = useState({
     page: 1,
-    limit: 2,
+    limit: 10,
     name: '',
   });
 
@@ -23,7 +30,7 @@ export default function HomeScreen() {
       case 'uninitialized':
         return null;
       case 'loading':
-        return <Text>loading...</Text>;
+        return <ActivityIndicator />;
       case 'failed':
         return <Text>{error}</Text>;
       default:
@@ -37,7 +44,6 @@ export default function HomeScreen() {
         data={todos}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
-        // numColumns={2}
         contentContainerStyle={{
           margin: 8,
         }}
@@ -47,16 +53,7 @@ export default function HomeScreen() {
 
   const renderItem = ({item}) => {
     return (
-      <TouchableOpacity
-        onPress={() => alert(item.id)}
-        style={{
-          flex: 1,
-          backgroundColor: 'tomato',
-          height: 80,
-          margin: 8,
-          padding: 16,
-          borderRadius: 8,
-        }}>
+      <TouchableOpacity onPress={() => alert(item.id)} style={styles.item}>
         <Text>{item.title}</Text>
       </TouchableOpacity>
     );
@@ -66,10 +63,12 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  item: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'bisque',
+    backgroundColor: 'tomato',
+    height: 80,
+    margin: 8,
+    padding: 16,
+    borderRadius: 8,
   },
 });

@@ -21,9 +21,9 @@ export const fetchTodosFailed = error => ({
 });
 
 export const fetchTodos = searchParams => {
-  const queryParams = new URLSearchParams(searchParams);
-  console.log('queryParams: ', queryParams.toString());
-  const url = `https://jsonplaceholder.typicode.com/todos?${queryParams}`;
+  const {page, limit} = searchParams;
+  const url = `https://jsonplaceholder.typicode.com/todos?_page=${page}&_limit=${limit}`;
+
   return async dispatch => {
     dispatch(fetchTodosStarted());
 
