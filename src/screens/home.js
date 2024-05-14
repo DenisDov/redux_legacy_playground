@@ -27,6 +27,7 @@ const TodosList = ({todos}) => (
 const renderItem = ({item}) => {
   return (
     <TouchableOpacity onPress={() => alert(item.id)} style={styles.item}>
+      <Text style={styles.title}>{item.id}</Text>
       <Text>{item.title}</Text>
     </TouchableOpacity>
   );
@@ -35,6 +36,7 @@ const renderItem = ({item}) => {
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const {status, error, todos} = useSelector(state => state.remoteTodos);
+  console.log('todos: ', todos);
 
   const [searchParams, setSearchParams] = useState({
     page: 1,
@@ -85,5 +87,10 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
