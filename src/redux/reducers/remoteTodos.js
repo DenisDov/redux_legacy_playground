@@ -22,7 +22,7 @@ export default function remoteTodosReducer(state = initialState, action) {
       return {
         ...state,
         status: 'succeeded',
-        todos: action.todos,
+        todos: [...state.todos, ...action.todos], // Append new todos
       };
     }
     case FETCH_TODOS_FAILED: {

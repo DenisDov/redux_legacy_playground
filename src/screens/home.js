@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 import {fetchTodos} from '../redux/actions/remoteTodos';
 
-const TodosList = ({todos}) => (
+const TodosList = ({todos, onEndReached}) => (
   <FlatList
     data={todos}
     renderItem={renderItem}
@@ -21,6 +21,8 @@ const TodosList = ({todos}) => (
     contentContainerStyle={{
       margin: 8,
     }}
+    onEndReached={onEndReached}
+    onEndReachedThreshold={0.5}
   />
 );
 
@@ -48,21 +50,12 @@ export default function HomeScreen() {
     dispatch(fetchTodos(searchParams));
   }, [dispatch, searchParams]);
 
-  const renderContent = () => {
-    switch (status) {
-      case 'uninitialized':
-        return null;
-      case 'loading':
-        return <ActivityIndicator />;
-      case 'failed':
-        return <Text>{error}</Text>;
-      default:
-        return <TodosList todos={todos} />;
-    }
+  const loadMore = () => {
+    setSearchParams(prev => ({...prev, page: prev.page + 1}));
   };
 
   const debouncedSearch = _.debounce(query => {
-    setSearchParams(prev => ({...prev, title: query}));
+    setSearchParams({page: 1, limit: 10, title: query});
   }, 500);
 
   return (
@@ -70,8 +63,9 @@ export default function HomeScreen() {
       <TextInput
         style={styles.input}
         onChangeText={query => debouncedSearch(query)}
+        placeholder="Search todos..."
       />
-      {renderContent()}
+      <TodosList todos={todos} onEndReached={loadMore} />
     </View>
   );
 }
@@ -87,6 +81,9 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
+    margin: 8,
+    padding: 8,
+    borderRadius: 4,
   },
   title: {
     fontSize: 36,
