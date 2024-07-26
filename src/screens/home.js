@@ -66,6 +66,8 @@ export default function HomeScreen() {
         placeholder="Search todos..."
       />
       <TodosList todos={todos} onEndReached={loadMore} />
+      {status === 'loading' && <ActivityIndicator />}
+      {status === 'failed' && <Text>{error}</Text>}
     </View>
   );
 }
