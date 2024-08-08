@@ -20,20 +20,22 @@ export const fetchTodosFailed = error => ({
   error,
 });
 
-export const fetchTodos = searchParams => {
+export const fetchTodos = (searchParams, reset = false) => {
   const {page, limit, title} = searchParams;
+  console.log('title123: ', title);
   let url = `https://jsonplaceholder.typicode.com/todos?_page=${page}&_limit=${limit}&title_like=${encodeURIComponent(
     title,
   )}`;
 
   return async dispatch => {
-    dispatch(fetchTodosStarted());
+    dispatch({type: FETCH_TODOS_STARTED, reset});
 
     try {
-      const res = await axios.get(url);
-      dispatch(fetchTodosSucceeded(res.data));
+      const {data} = await axios.get(url);
+      console.log('dataRES: ', data);
+      dispatch({type: FETCH_TODOS_SUCCEEDED, todos: data});
     } catch (err) {
-      dispatch(fetchTodosFailed(err.message));
+      dispatch({type: FETCH_TODOS_FAILED, error: err.message});
     }
   };
 };

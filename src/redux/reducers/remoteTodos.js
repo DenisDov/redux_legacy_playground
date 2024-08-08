@@ -16,6 +16,8 @@ export default function remoteTodosReducer(state = initialState, action) {
       return {
         ...state,
         status: 'loading',
+        // Reset todos if this is a new search
+        todos: action.reset ? [] : state.todos,
       };
     }
     case FETCH_TODOS_SUCCEEDED: {

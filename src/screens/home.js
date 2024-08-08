@@ -27,6 +27,7 @@ const TodosList = ({todos, onEndReached}) => (
 );
 
 const renderItem = ({item}) => {
+  // console.log('item: ', item);
   return (
     <TouchableOpacity onPress={() => alert(item.id)} style={styles.item}>
       <Text style={styles.title}>{item.id}</Text>
@@ -38,7 +39,7 @@ const renderItem = ({item}) => {
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const {status, error, todos} = useSelector(state => state.remoteTodos);
-  console.log('todos: ', todos);
+  // console.log('todos: ', todos);
 
   const [searchParams, setSearchParams] = useState({
     page: 1,
@@ -47,7 +48,7 @@ export default function HomeScreen() {
   });
 
   useEffect(() => {
-    dispatch(fetchTodos(searchParams));
+    dispatch(fetchTodos(searchParams, searchParams.page === 1));
   }, [dispatch, searchParams]);
 
   const loadMore = () => {
@@ -55,7 +56,7 @@ export default function HomeScreen() {
   };
 
   const debouncedSearch = _.debounce(query => {
-    setSearchParams({page: 1, limit: 10, title: query});
+    setSearchParams(prev => ({...prev, page: 1, title: query}));
   }, 500);
 
   return (
